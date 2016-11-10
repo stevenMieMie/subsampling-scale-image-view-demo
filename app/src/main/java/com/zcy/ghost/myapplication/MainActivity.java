@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
                 .load(testUrl).downloadOnly(new SimpleTarget<File>() {
             @Override
             public void onResourceReady(File resource, GlideAnimation<? super File> glideAnimation) {
+                // 将保存的图片地址给SubsamplingScaleImageView,这里注意设置ImageViewState设置初始显示比例
                 imageView.setImage(ImageSource.uri(Uri.fromFile(resource)), new ImageViewState(2.0F, new PointF(0, 0), 0));
             }});
     }
