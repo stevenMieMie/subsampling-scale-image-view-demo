@@ -25,38 +25,11 @@ finalFile downDir = Environment.getExternalStorageDirectory();
 
 //下载图片保存到本地
 Glide.with(this)
-    .load(testUrl)
-    .asBitmap()
-    .into(new SimpleTarget<Bitmap>() {
-        @Override
-        public void onResourceReady(Bitmap resource,
-                    GlideAnimation<? super Bitmap> glideAnimation) {
-            File file = new File(downDir, "/da0f06f8358a4c95921c00acfd675b60.jpg");
-            if (!file.exists()) {
-                try {
-                    file.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            FileOutputStream fout = null;
-            try {
-                //保存图片
-                fout = new FileOutputStream(file);
-                resource.compress(Bitmap.CompressFormat.JPEG, 100, fout);
-                // 将保存的图片地址给SubsamplingScaleImageView,这里注意设置ImageViewState设置初始显示比例
-                imageView.setImage(ImageSource.uri(file.getAbsolutePath()), new ImageViewState(1.0F, new PointF(0, 0), 0));
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } finally {
-                try {
-                    if (fout != null) fout.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    });
+     .load(testUrl).downloadOnly(new SimpleTarget<File>() {
+            @Override
+            public void onResourceReady(File resource, GlideAnimation<? super File> glideAnimation) {
+                imageView.setImage(ImageSource.uri(Uri.fromFile(resource)), new ImageViewState(2.0F, new PointF(0, 0), 0));
+        }});
 ```
 
 ###效果图：
